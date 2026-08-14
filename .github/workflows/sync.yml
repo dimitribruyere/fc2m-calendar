@@ -2,7 +2,7 @@ name: Synchronisation calendrier Sportcorico
 
 on:
   schedule:
-    # Toutes les 15 minutes. GitHub peut retarder légèrement l'exécution
+    # Toutes les 15 minutes (GitHub peut retarder légèrement l'exécution)
     # en cas de forte charge sur les runners publics, mais ça reste largement
     # suffisant pour ce cas d'usage.
     - cron: "*/15 * * * *"
