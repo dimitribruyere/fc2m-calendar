@@ -129,7 +129,7 @@ def build_description(evt):
     return "\n".join(lines)
 
 
-def convert(events, calendar_name="FC 2M - Sportcorico"):
+def convert(events, calendar_name="FC2M - Sportcorico"):
     cal = Calendar()
     cal.add("prodid", "-//FC2M Sportcorico Sync//fr//")
     cal.add("version", "2.0")

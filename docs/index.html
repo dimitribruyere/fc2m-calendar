@@ -7,7 +7,6 @@
 <style>
   :root {
     --green: #1e7d32;
-    --green-dark: #145a24;
     --bg: #f4f6f4;
     --card: #ffffff;
     --text: #1c1c1c;
@@ -42,8 +41,9 @@
   .logo {
     display: block;
     margin: 0 auto 12px;
-    font-size: 2.5rem;
-    text-align: center;
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
   }
   .card {
     background: var(--card);
@@ -67,11 +67,6 @@
     margin-bottom: 12px;
   }
   .btn:last-child { margin-bottom: 0; }
-  .btn-primary {
-    background: var(--green);
-    color: #fff;
-  }
-  .btn-primary:hover { background: var(--green-dark); }
   .btn-secondary {
     background: #fff;
     color: var(--text);
@@ -81,8 +76,17 @@
   .btn .icon {
     font-size: 1.3rem;
     width: 28px;
+    height: 28px;
     text-align: center;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn .icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .link-box {
     display: flex;
@@ -141,20 +145,35 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="logo">⚽</div>
+    <img class="logo" src="assets/logo.jpg" alt="Logo FC2M">
     <h1>Calendrier FC2M</h1>
     <p class="subtitle">Matchs et entraînements directement dans votre agenda,
     mis à jour automatiquement.</p>
 
     <div class="card">
-      <a class="btn btn-primary" id="google-btn" target="_blank" rel="noopener">
-        <span class="icon">📅</span> Ajouter à Google Agenda
+      <a class="btn btn-secondary" id="google-btn" target="_blank" rel="noopener">
+        <span class="icon"><img src="assets/google-agenda.png" alt=""></span> Ajouter à Google Agenda
       </a>
       <a class="btn btn-secondary" id="apple-btn">
-        <span class="icon">🍎</span> Ajouter à Apple Calendrier
+        <span class="icon">
+          <svg viewBox="0 0 48 48" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="40" height="40" rx="9" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.2"/>
+            <path d="M4 13c0-4.97 4.03-9 9-9h22c4.97 0 9 4.03 9 9v3H4v-3z" fill="#FF3B30"/>
+            <line x1="4" y1="16" x2="44" y2="16" stroke="#e3e3e3" stroke-width="1"/>
+            <g fill="#c7c7cc">
+              <circle cx="13" cy="24" r="2.1"/>
+              <circle cx="21.3" cy="24" r="2.1"/>
+              <circle cx="29.7" cy="24" r="2.1"/>
+              <circle cx="38" cy="24" r="2.1"/>
+              <circle cx="13" cy="32" r="2.1"/>
+              <circle cx="21.3" cy="32" r="2.1"/>
+              <circle cx="29.7" cy="32" r="2.1"/>
+            </g>
+          </svg>
+        </span> Ajouter à Apple Calendrier
       </a>
       <a class="btn btn-secondary" id="outlook-btn" target="_blank" rel="noopener">
-        <span class="icon">📧</span> Ajouter à Outlook
+        <span class="icon"><img src="assets/outlook.svg" alt=""></span> Ajouter à Outlook
       </a>
 
       <details>
