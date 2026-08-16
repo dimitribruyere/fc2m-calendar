@@ -96,8 +96,6 @@ def parse_dt(value):
 
 
 def build_title(evt):
-    prefix = "❌ ANNULÉ - " if evt.get("canceled_at") else ""
-
     if evt["event_type"] == "match" and evt.get("match_or_platter"):
         m = evt["match_or_platter"]["match"]
         home = m.get("home_team_custom_name_for_event") or m.get("home_team_name")
@@ -105,11 +103,11 @@ def build_title(evt):
         score = ""
         if m.get("status") == "Terminé" and m.get("home_score") is not None:
             score = f" ({m['home_score']} - {m['outside_score']})"
-        return f"{prefix}⚽ {home} vs {away}{score}"
+        return f"⚽ {home} vs {away}{score}"
 
     icons = {"training": "🏃", "event": "📌"}
     icon = icons.get(evt["event_type"], "📅")
-    return f"{prefix}{icon} {evt['title']}"
+    return f"{icon} {evt['title']}"
 
 
 def build_description(evt):
@@ -146,6 +144,9 @@ def convert(events, calendar_name="FC 2M - Sportcorico"):
             continue
         seen_ids.add(evt["id"])
 
+        if evt.get("canceled_at"):
+            continue
+
         begin = parse_dt(evt["begin_at"])
         if begin is None:
             continue
@@ -163,7 +164,7 @@ def convert(events, calendar_name="FC 2M - Sportcorico"):
         if evt.get("location"):
             e.add("location", vText(evt["location"]))
         e.add("description", vText(build_description(evt)))
-        e.add("status", "CANCELLED" if evt.get("canceled_at") else "CONFIRMED")
+        e.add("status", "CONFIRMED")
 
         cal.add_component(e)
 
