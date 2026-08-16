@@ -193,18 +193,9 @@
           ci-dessus font bien un abonnement.
         </p>
         <p>
-          Le bouton "Ajouter à Google Agenda" ne fonctionne que depuis un
-          <strong>ordinateur</strong> (il ouvre la page web de Google qui
-          gère l'abonnement). Sur mobile, taper ce lien télécharge le
-          fichier et propose un import ponctuel — ce n'est pas un
-          abonnement, il ne se mettra jamais à jour tout seul.
-        </p>
-        <p>
-          Google ne permet pas d'ajouter un abonnement calendrier par URL
-          depuis l'appli mobile (Android ou iPhone), quelle que soit la
-          méthode utilisée — c'est une limitation du produit, pas de cette
-          page. En attendant une solution mobile, ajoutez le calendrier
-          depuis un ordinateur avec le même compte Google que votre
+          Si le bouton "Ajouter à Google Agenda" ouvre un agenda vide ou ne
+          propose pas de bouton "S'abonner", refaites l'ajout depuis un
+          <strong>ordinateur</strong> avec le même compte Google que votre
           téléphone : l'abonnement se synchronise ensuite automatiquement
           sur l'appli mobile.
         </p>
@@ -218,9 +209,11 @@
   var httpsUrl = new URL("fc2m.ics", window.location.href).href;
   var webcalUrl = httpsUrl.replace(/^https?:/, "webcal:");
 
+  var GOOGLE_CALENDAR_ID = "89e17df8b9de33a0223a91ef5b30f4aa8f615f38136d81f239c8a697392322ea@group.calendar.google.com";
+
   document.getElementById("ics-url").textContent = httpsUrl;
   document.getElementById("google-btn").href =
-    "https://calendar.google.com/calendar/render?cid=" + encodeURIComponent(webcalUrl);
+    "https://calendar.google.com/calendar/u/0?cid=" + encodeURIComponent(GOOGLE_CALENDAR_ID);
   document.getElementById("apple-btn").href = webcalUrl;
 
   document.getElementById("copy-btn").addEventListener("click", function () {
