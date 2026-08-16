@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write # requis pour l'authentification Google via fédération d'identité
 
 jobs:
   sync:
@@ -24,7 +25,7 @@ jobs:
           python-version: "3.12"
 
       - name: Installation des dépendances
-        run: pip install icalendar
+        run: pip install -r requirements.txt
 
       - name: Génération du fichier ICS
         env:
@@ -38,3 +39,18 @@ jobs:
           git add docs/fc2m.ics
           git diff --quiet --cached || git commit -m "Sync calendrier Sportcorico"
           git push
+
+      - name: Authentification Google Cloud (fédération d'identité, sans clé)
+        # continue-on-error : test en cours, ne doit pas casser la génération du .ics
+        continue-on-error: true
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/376874538006/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions
+          service_account: fc2m-calendar-sync@project-e5768414-b87f-40ae-9d7.iam.gserviceaccount.com
+
+      - name: Synchronisation vers Google Calendar
+        continue-on-error: true
+        env:
+          SPORTCORICO_AUTH: ${{ secrets.SPORTCORICO_AUTH }}
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+        run: python3 sync_to_google_calendar.py
