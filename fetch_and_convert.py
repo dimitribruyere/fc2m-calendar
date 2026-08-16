@@ -151,7 +151,7 @@ def convert(events, calendar_name="FC 2M - Sportcorico"):
             continue
 
         end = parse_dt(evt.get("ending_at"))
-        if end is None:
+        if end is None or end <= begin:
             end = begin + DEFAULT_DURATION.get(evt["event_type"], timedelta(hours=2))
 
         e = Event()
