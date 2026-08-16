@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendrier FC2M</title>
+<style>
+  :root {
+    --green: #1e7d32;
+    --green-dark: #145a24;
+    --bg: #f4f6f4;
+    --card: #ffffff;
+    --text: #1c1c1c;
+    --muted: #5f6b63;
+    --border: #e1e6e1;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px 64px;
+  }
+  .wrap {
+    max-width: 480px;
+    width: 100%;
+  }
+  h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 8px 0 4px;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0 0 28px;
+  }
+  .logo {
+    display: block;
+    margin: 0 auto 12px;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+  .btn:last-child { margin-bottom: 0; }
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-secondary {
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { background: #f0f2f0; }
+  .btn .icon {
+    font-size: 1.3rem;
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .link-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0f2f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    word-break: break-all;
+    margin-top: 8px;
+  }
+  .link-box button {
+    flex-shrink: 0;
+    border: none;
+    background: var(--green);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding: 4px 0;
+  }
+  details p, details ol {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1c1c1c;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="logo">⚽</div>
+    <h1>Calendrier FC2M</h1>
+    <p class="subtitle">Matchs et entraînements directement dans votre agenda,
+    mis à jour automatiquement.</p>
+
+    <div class="card">
+      <a class="btn btn-primary" id="google-btn" target="_blank" rel="noopener">
+        <span class="icon">📅</span> Ajouter à Google Agenda
+      </a>
+      <a class="btn btn-secondary" id="apple-btn">
+        <span class="icon">🍎</span> Ajouter à Apple Calendrier
+      </a>
+      <a class="btn btn-secondary" id="outlook-btn" target="_blank" rel="noopener">
+        <span class="icon">📧</span> Ajouter à Outlook
+      </a>
+
+      <details>
+        <summary>Autre application / lien direct</summary>
+        <p>Copiez ce lien et utilisez l'option "S'abonner à un calendrier depuis une URL"
+        de votre application :</p>
+        <div class="link-box">
+          <span id="ics-url"></span>
+          <button id="copy-btn">Copier</button>
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <details>
+        <summary>Ça ne se met pas à jour ?</summary>
+        <p>
+          Vérifiez que vous avez bien <strong>ajouté un abonnement</strong>
+          et non <strong>importé</strong> le calendrier — un import ne fait
+          qu'une copie figée qui ne se met jamais à jour. Les boutons
+          ci-dessus font bien un abonnement.
+        </p>
+        <p>
+          Sur Google Agenda, la resynchronisation d'un calendrier externe
+          n'est pas instantanée : elle a lieu automatiquement toutes les
+          12 à 24h environ, sans possibilité de la forcer manuellement.
+        </p>
+        <p>
+          Sur Android, l'app mobile Google Agenda ne permet pas d'ajouter
+          un abonnement directement : utilisez le bouton "Ajouter à Google
+          Agenda" ci-dessus depuis un ordinateur (ou passez votre navigateur
+          mobile en "Version ordinateur"), la synchro apparaîtra ensuite
+          automatiquement sur votre téléphone.
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Lien copié !</div>
+
+<script>
+  var httpsUrl = new URL("fc2m.ics", window.location.href).href;
+  var webcalUrl = httpsUrl.replace(/^https?:/, "webcal:");
+
+  document.getElementById("ics-url").textContent = httpsUrl;
+  document.getElementById("google-btn").href =
+    "https://calendar.google.com/calendar/render?cid=" + encodeURIComponent(httpsUrl);
+  document.getElementById("apple-btn").href = webcalUrl;
+  document.getElementById("outlook-btn").href =
+    "https://outlook.live.com/calendar/0/addcalendar?url=" +
+    encodeURIComponent(httpsUrl) + "&name=" + encodeURIComponent("FC2M");
+
+  document.getElementById("copy-btn").addEventListener("click", function () {
+    navigator.clipboard.writeText(httpsUrl).then(function () {
+      var toast = document.getElementById("toast");
+      toast.classList.add("show");
+      setTimeout(function () { toast.classList.remove("show"); }, 1800);
+    });
+  });
+</script>
+</body>
+</html>
