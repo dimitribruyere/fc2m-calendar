@@ -172,10 +172,6 @@
           </svg>
         </span> Ajouter à Apple Calendrier
       </a>
-      <a class="btn btn-secondary" id="outlook-btn" target="_blank" rel="noopener">
-        <span class="icon"><img src="assets/outlook.svg" alt=""></span> Ajouter à Outlook
-      </a>
-
       <details>
         <summary>Autre application / lien direct</summary>
         <p>Copiez ce lien et utilisez l'option "S'abonner à un calendrier depuis une URL"
@@ -223,9 +219,6 @@
   document.getElementById("google-btn").href =
     "https://calendar.google.com/calendar/render?cid=" + encodeURIComponent(webcalUrl);
   document.getElementById("apple-btn").href = webcalUrl;
-  document.getElementById("outlook-btn").href =
-    "https://outlook.live.com/calendar/0/addcalendar?url=" +
-    encodeURIComponent(httpsUrl) + "&name=" + encodeURIComponent("FC2M");
 
   document.getElementById("copy-btn").addEventListener("click", function () {
     navigator.clipboard.writeText(httpsUrl).then(function () {
