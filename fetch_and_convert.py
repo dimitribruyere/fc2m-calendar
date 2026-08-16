@@ -98,8 +98,8 @@ def parse_dt(value):
 def build_title(evt):
     if evt["event_type"] == "match" and evt.get("match_or_platter"):
         m = evt["match_or_platter"]["match"]
-        home = m.get("home_team_custom_name_for_event") or m.get("home_team_name")
-        away = m.get("outside_team_custom_name_for_event") or m.get("outside_team_name")
+        home = (m.get("home_team_custom_name_for_event") or m.get("home_team_name")).replace("SENIORS", "FC2M")
+        away = (m.get("outside_team_custom_name_for_event") or m.get("outside_team_name")).replace("SENIORS", "FC2M")
         score = ""
         if m.get("status") == "Terminé" and m.get("home_score") is not None:
             score = f" ({m['home_score']} - {m['outside_score']})"
