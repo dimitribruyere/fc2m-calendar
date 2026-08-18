@@ -38,6 +38,7 @@ jobs:
           git config user.email "actions@github.com"
           git add docs/fc2m-entrainements.ics docs/fc2m-matchs.ics
           git diff --quiet --cached || git commit -m "Sync calendrier Sportcorico"
+          git pull --rebase --autostash
           git push
 
       - name: Authentification Google Cloud (fédération d'identité, sans clé)
