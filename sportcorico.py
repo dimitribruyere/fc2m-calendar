@@ -134,3 +134,7 @@ def iter_valid_events(events):
             end = begin + DEFAULT_DURATION.get(evt["event_type"], timedelta(hours=2))
 
         yield evt, begin, end
+
+
+def is_training(evt):
+    return evt["event_type"] == "training"

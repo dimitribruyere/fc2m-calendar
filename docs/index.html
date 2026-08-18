@@ -45,6 +45,10 @@
     height: 84px;
     object-fit: contain;
   }
+  h2 {
+    font-size: 1.05rem;
+    margin: 0 0 14px;
+  }
   .card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -148,13 +152,14 @@
     <img class="logo" src="assets/logo.jpg" alt="Logo FC2M">
     <h1>Calendrier FC2M</h1>
     <p class="subtitle">Matchs et entraînements directement dans votre agenda,
-    mis à jour automatiquement.</p>
+    mis à jour automatiquement. Choisissez ce que vous voulez recevoir.</p>
 
-    <div class="card">
-      <a class="btn btn-secondary" id="google-btn" target="_blank" rel="noopener">
+    <div class="card feed-card" data-ics="fc2m-matchs.ics" data-calendar-id="e541010a20475bf02e3f2ff3a2a59a4327fe423d4e281a156bb5d7f479854066@group.calendar.google.com">
+      <h2>⚽ Matchs & autres événements</h2>
+      <a class="btn btn-secondary google-btn" target="_blank" rel="noopener">
         <span class="icon"><img src="assets/google-agenda.png" alt=""></span> Ajouter à Google Agenda
       </a>
-      <a class="btn btn-secondary" id="apple-btn">
+      <a class="btn btn-secondary apple-btn">
         <span class="icon">
           <svg viewBox="0 0 48 48" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
             <rect x="4" y="4" width="40" height="40" rx="9" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.2"/>
@@ -177,28 +182,43 @@
         <p>Copiez ce lien et utilisez l'option "S'abonner à un calendrier depuis une URL"
         de votre application :</p>
         <div class="link-box">
-          <span id="ics-url"></span>
-          <button id="copy-btn">Copier</button>
+          <span class="ics-url"></span>
+          <button class="copy-btn">Copier</button>
         </div>
       </details>
     </div>
 
-    <div class="card">
+    <div class="card feed-card" data-ics="fc2m-entrainements.ics" data-calendar-id="0f70b4374572af48bf96cc050725ab323c72c6d2a22f668f77087d91de174209@group.calendar.google.com">
+      <h2>🏃 Entraînements</h2>
+      <a class="btn btn-secondary google-btn" target="_blank" rel="noopener">
+        <span class="icon"><img src="assets/google-agenda.png" alt=""></span> Ajouter à Google Agenda
+      </a>
+      <a class="btn btn-secondary apple-btn">
+        <span class="icon">
+          <svg viewBox="0 0 48 48" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="40" height="40" rx="9" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.2"/>
+            <path d="M4 13c0-4.97 4.03-9 9-9h22c4.97 0 9 4.03 9 9v3H4v-3z" fill="#FF3B30"/>
+            <line x1="4" y1="16" x2="44" y2="16" stroke="#e3e3e3" stroke-width="1"/>
+            <g fill="#c7c7cc">
+              <circle cx="13" cy="24" r="2.1"/>
+              <circle cx="21.3" cy="24" r="2.1"/>
+              <circle cx="29.7" cy="24" r="2.1"/>
+              <circle cx="38" cy="24" r="2.1"/>
+              <circle cx="13" cy="32" r="2.1"/>
+              <circle cx="21.3" cy="32" r="2.1"/>
+              <circle cx="29.7" cy="32" r="2.1"/>
+            </g>
+          </svg>
+        </span> Ajouter à Apple Calendrier
+      </a>
       <details>
-        <summary>Ça ne se met pas à jour ?</summary>
-        <p>
-          Vérifiez que vous avez bien <strong>ajouté un abonnement</strong>
-          et non <strong>importé</strong> le calendrier — un import ne fait
-          qu'une copie figée qui ne se met jamais à jour. Les boutons
-          ci-dessus font bien un abonnement.
-        </p>
-        <p>
-          Si le bouton "Ajouter à Google Agenda" ouvre un agenda vide ou ne
-          propose pas de bouton "S'abonner", refaites l'ajout depuis un
-          <strong>ordinateur</strong> avec le même compte Google que votre
-          téléphone : l'abonnement se synchronise ensuite automatiquement
-          sur l'appli mobile.
-        </p>
+        <summary>Autre application / lien direct</summary>
+        <p>Copiez ce lien et utilisez l'option "S'abonner à un calendrier depuis une URL"
+        de votre application :</p>
+        <div class="link-box">
+          <span class="ics-url"></span>
+          <button class="copy-btn">Copier</button>
+        </div>
       </details>
     </div>
   </div>
@@ -206,21 +226,22 @@
   <div class="toast" id="toast">Lien copié !</div>
 
 <script>
-  var httpsUrl = new URL("fc2m.ics", window.location.href).href;
-  var webcalUrl = httpsUrl.replace(/^https?:/, "webcal:");
+  document.querySelectorAll(".feed-card").forEach(function (card) {
+    var httpsUrl = new URL(card.dataset.ics, window.location.href).href;
+    var webcalUrl = httpsUrl.replace(/^https?:/, "webcal:");
+    var calendarId = card.dataset.calendarId;
 
-  var GOOGLE_CALENDAR_ID = "89e17df8b9de33a0223a91ef5b30f4aa8f615f38136d81f239c8a697392322ea@group.calendar.google.com";
+    card.querySelector(".ics-url").textContent = httpsUrl;
+    card.querySelector(".google-btn").href =
+      "https://calendar.google.com/calendar/u/0?cid=" + encodeURIComponent(calendarId);
+    card.querySelector(".apple-btn").href = webcalUrl;
 
-  document.getElementById("ics-url").textContent = httpsUrl;
-  document.getElementById("google-btn").href =
-    "https://calendar.google.com/calendar/u/0?cid=" + encodeURIComponent(GOOGLE_CALENDAR_ID);
-  document.getElementById("apple-btn").href = webcalUrl;
-
-  document.getElementById("copy-btn").addEventListener("click", function () {
-    navigator.clipboard.writeText(httpsUrl).then(function () {
-      var toast = document.getElementById("toast");
-      toast.classList.add("show");
-      setTimeout(function () { toast.classList.remove("show"); }, 1800);
+    card.querySelector(".copy-btn").addEventListener("click", function () {
+      navigator.clipboard.writeText(httpsUrl).then(function () {
+        var toast = document.getElementById("toast");
+        toast.classList.add("show");
+        setTimeout(function () { toast.classList.remove("show"); }, 1800);
+      });
     });
   });
 </script>
