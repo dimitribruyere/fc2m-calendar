@@ -14,7 +14,7 @@ API_BASE = "https://api.sportcorico.com/api/events/v3"
 # Fenêtre glissante : on récupère le passé récent (pour voir les annulations
 # de dernière minute passer proprement) et le futur lointain (saison en cours)
 DAYS_BEFORE = 14
-DAYS_AFTER = 200
+DAYS_AFTER = 365
 
 DEFAULT_DURATION = {
     "training": timedelta(hours=1, minutes=30),
